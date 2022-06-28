@@ -16,10 +16,14 @@ module.exports = class extends Generator {
 
     const prompts = [
       {
-        type: "confirm",
-        name: "someAnswer",
-        message: "Would you like to enable this option?",
-        default: true
+        type: "prompt",
+        name: "name",
+        message: "Are you in app folder?"
+      },
+      {
+        type: "input",
+        name: "className",
+        message: "What it's the model class name"
       }
     ];
 
@@ -30,9 +34,23 @@ module.exports = class extends Generator {
   }
 
   writing() {
+    console.log(this.prompt);
     this.fs.copy(
-      this.templatePath("dummyfile.txt"),
-      this.destinationPath("dummyfile.txt")
+      this.templatePath("_views.py"),
+      this.destinationPath("views.py"),
+      { className: this.prompt.className, appName: this.appName }
+    );
+
+    this.fs.copy(
+      this.templatePath("_serializers.py"),
+      this.destinationPath("serializers.py"),
+      { className: this.prompt.className, appName: this.appName }
+    );
+
+    this.fs.copy(
+      this.templatePath("_urls.py"),
+      this.destinationPath("urls.py"),
+      { className: this.prompt.className, appName: this.appName }
     );
   }
 };
