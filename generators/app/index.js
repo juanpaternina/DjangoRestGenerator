@@ -16,14 +16,20 @@ module.exports = class extends Generator {
 
     const prompts = [
       {
-        type: "prompt",
+        type: "input",
         name: "name",
-        message: "Are you in app folder?"
+        message: "Just Enter gere",
+        default: this.appname // Default to current folder name
+      },
+      {
+        type: "input",
+        name: "endPoint",
+        message: "What is the Endpoint Name for this app"
       },
       {
         type: "input",
         name: "className",
-        message: "What it's the model class name"
+        message: "What is the model class name"
       }
     ];
 
@@ -34,23 +40,27 @@ module.exports = class extends Generator {
   }
 
   writing() {
-    console.log(this.prompt);
-    this.fs.copy(
+    console.log(this.props, this.appName);
+    this.fs.copyTpl(
       this.templatePath("_views.py"),
-      this.destinationPath("views.py"),
-      { className: this.prompt.className, appName: this.appName }
+      this.destinationPath("_views.py"),
+      { className: this.props.className, appName: this.props.name }
     );
 
-    this.fs.copy(
+    this.fs.copyTpl(
       this.templatePath("_serializers.py"),
       this.destinationPath("serializers.py"),
-      { className: this.prompt.className, appName: this.appName }
+      { className: this.props.className, appName: this.props.name }
     );
 
-    this.fs.copy(
+    this.fs.copyTpl(
       this.templatePath("_urls.py"),
       this.destinationPath("urls.py"),
-      { className: this.prompt.className, appName: this.appName }
+      {
+        className: this.props.className,
+        appName: this.props.name,
+        endPoint: this.props.endPoint
+      }
     );
   }
 };

@@ -3,7 +3,7 @@ from rest_framework.routers import DefaultRouter
 from . import views
 
 router = DefaultRouter()
-router.register(r'userChatRol', views.<%= className %>ViewSet, basename='User Chat Rol')
+router.register(r'<%= endPoint %>', views.<%= className %>ViewSet, basename='')
 urlpatterns = [
     path('', include(router.urls))
 ]
